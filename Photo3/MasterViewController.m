@@ -27,6 +27,14 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
+
+    
+    self.charliePhotos = [[NSMutableArray alloc]initWithObjects:[UIImage imageNamed:@"IMG_2150"], [UIImage imageNamed:@"IMG_2271"], [UIImage imageNamed:@"IMG_2395"], [UIImage imageNamed:@"IMG_2396"], nil];
+    self.rajaPhotos = [[NSMutableArray alloc]initWithObjects:[UIImage imageNamed:@"Image"], [UIImage imageNamed:@"IMG_2379"], [UIImage imageNamed:@"IMG_2439"], [UIImage imageNamed:@"IMG_3176"], nil];
+    self.otherDogPhotos = [[NSMutableArray alloc]initWithObjects:[UIImage imageNamed:@"IMG_2600"],[UIImage imageNamed:@"IMG_1945"], [UIImage imageNamed:@"IMG_1867"], nil];
+    
+    self.photosArray = [[NSMutableArray alloc]initWithObjects:self.charliePhotos, self.rajaPhotos, self.otherDogPhotos, nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,23 +59,50 @@
         NSDate *object = self.objects[indexPath.row];
         [[segue destinationViewController] setDetailItem:object];
     }
+    
+    if ([[segue identifier] isEqualToString:@"showDetailPhoto"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSLog(@"%@", sender);
+        
+        NSLog(@"%@", indexPath.description);
+        PhotoCollectionViewCell *currentCell = (PhotoCollectionViewCell *)sender;
+        
+        //UIImage *cellImage = [self.photosArray[indexPath.section] objectAtIndex:indexPath.row];
+        
+        DetailPhotoTableViewController *detailController = (DetailPhotoTableViewController *) segue.destinationViewController;
+        
+        detailController.image = currentCell.photoView.image;
+    }
 }
 
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.photosArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.objects.count;
+    return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = self.objects[indexPath.row];
-    cell.textLabel.text = [object description];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    PhotoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+
+    NSArray *currentRow = self.photosArray[indexPath.section];
+    
+    [cell setBackgroundColor:[UIColor magentaColor]];
+   // cell.separatorInset = UIEdgeInsetsZero;
+    
+    // cell.photoView.image = [self.photosArray[indexPath.section] objectAtIndex:indexPath.row];
+    //NSLog(@"%@", [cell.contentView.subviews objectAtIndex:0]);
+    
+    cell.collectionView.delegate = cell.collectionView;
+    cell.collectionView.dataSource = cell.collectionView;
+    cell.collectionView.backgroundColor = [UIColor whiteColor];
+    cell.collectionView.collectionData =  currentRow;
+
     return cell;
 }
 

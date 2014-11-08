@@ -7,8 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoCollectionView.h"
+#import "PhotoCollectionViewCell.h"
+#import "PhotoTableViewCell.h"
+#import "DetailPhotoTableViewController.h"
 
 @interface MasterViewController : UITableViewController
+
+@property (strong, nonatomic) NSMutableArray *photosArray;
+@property (strong, nonatomic) NSMutableArray *rajaPhotos;
+@property (strong, nonatomic) NSMutableArray *charliePhotos;
+@property (strong, nonatomic) NSMutableArray *otherDogPhotos;
 
 
 @end
