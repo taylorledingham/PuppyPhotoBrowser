@@ -39,6 +39,7 @@
         cell.photoView = [[UIImageView alloc]init];
     cell.photoView.frame = cell.contentView.bounds;
     [cell.contentView addSubview:cell.photoView];
+        
 
     }
     
